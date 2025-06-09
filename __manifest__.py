@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Asignacion de equipos',
+    'version': '1.0',
+    'description': 'Sistema de asignación de equipos',
+    'summary': 'Sistema de asignación de equipos',
+    'author': 'DGV',
+    'website': 'https://github.com/AlfaSystemas5457/equipment_allocation',
+    'license': 'LGPL-3',
+    'category': 'Other Category',
+    'depends': [
+        'hr',
+        'hr_maintenance',
+        'maintenance',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/uid_sequence_view.xml',
+        'report/report_template.xml',
+        'views/employee_view.xml',
+        'views/menu_view.xml',
+        'views/allocation_view.xml',
+        'views/replacement_view.xml',
+        'views/maintenance_view.xml',
+    ],
+    'auto_install': False,
+    'application': True,
+    'sequence': 0,
+}

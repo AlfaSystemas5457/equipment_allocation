@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="equipment_allocations_view_form" model="ir.ui.view">
+        <field name="name">equipment.allocations.view.form</field>
+        <field name="model">equipment.allocations</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="handle_allocated" type="object" string="Asignar"
+                        class="bg-primary text-light " invisible="state != 'draft'" />
+                    <button name="handle_rejected" type="object" string="Rechazar"
+                        class="bg-secondary text-dark" invisible="state != 'draft'" />
+                    <button name="handle_returned" type="object" string="Devuelto"
+                        class="bg-secondary text-dark" invisible="state != 'allocated'" />
+                    <button name="handle_draft" type="object" string="Borrador"
+                        class="bg-secondary text-dark" />
+
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <div class="o_row">
+                            <field name="uid" readonly="1" />
+                        </div>
+                        <h1 class="o_row">
+                            <field name="name" placeholder="Solicitud de equipo"
+                                readonly="state not in ['draft']" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="allocation_type"
+                                readonly="state not in ['draft']" widget="radio"
+                                options="{'horizontal': true}" />
+                            <field name="area"
+                                readonly="state not in ['draft']" />
+                            <field name="employee_ids" widget="many2many_tags"
+                                readonly="state not in ['draft']" />
+                            <field name="has_replacement" invisible="has_replacement == False"
+                                readonly="1" />
+                        </group>
+                        <group>
+                            <field name="request_date" readonly="1" />
+                            <label for="duration" string="Duración"
+                                invisible="allocation_type != 'on_demand'" />
+                            <div invisible="allocation_type != 'on_demand'">
+                                <field name="duration" class="oe_inline"
+                                    required="allocation_type == 'on_demand'"
+                                    readonly="state not in ['draft']" />
+                                <field name="duration_type"
+                                    required="allocation_type == 'on_demand'" class="oe_inline"
+                                    readonly="state not in ['draft']" />
+                            </div>
+                            <field name="allocation_date"
+                                readonly="1" invisible="allocation_date == False" force_save="1" />
+                            <field name="return_date" readonly="1"
+                                invisible="allocation_type != 'on_demand' or return_date == False"
+                                force_save="1" />
+                            <field name="real_return_date" readonly="1"
+                                invisible="allocation_type != 'on_demand' or real_return_date == False"
+                                force_save="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Equipos">
+                            <field name="equipment_ids" readonly="state not in ['draft']" />
+                        </page>
+                        <page string="Equipos Anteriores" invisible="before_equipment_ids == False">
+                            <field name="before_equipment_ids" readonly="state not in ['draft']" />
+                        </page>
+                        <page string="Descripción">
+                            <field name="description" readonly="state not in ['draft']" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="equipment_allocations_view_list" model="ir.ui.view">
+        <field name="name">equipment.allocations.view.list</field>
+        <field name="model">equipment.allocations</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="uid" />
+                <field name="name" />
+                <field name="create_date" string="Fecha de creación" />
+                <field name="request_date" />
+                <field name="return_date" />
+                <field name="area" />
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+
+    <record id="equipment_allocations_action" model="ir.actions.act_window">
+        <field name="name">Asignación de equipos</field>
+        <field name="res_model">equipment.allocations</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Desde aquí puedes gestionar tus asignaciones.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="equipment_allocations_sub_menu"
+        name="Solicitud de asignacion de equipos"
+        action="equipment_allocations_action"
+        parent="equipment_allocation.equipment_allocations_menu"
+        sequence="10" />
+</odoo>

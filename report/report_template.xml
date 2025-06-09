@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Registro del Reporte -->
+    <record id="report_template_id" model="ir.actions.report">
+        <field name="name">Report Equipment Allocation</field>
+        <field name="model">equipment.allocations</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">equipment_allocation.report_template</field>
+        <field name="report_file">equipment_allocation.report_template</field>
+        <field name="print_report_name">'Report ' + 'equipment ' + (object.name or 'Without name')</field>
+        <field name="binding_model_id" ref="equipment_allocation.model_equipment_allocations" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Plantilla del Reporte -->
+    <template id="report_template">
+        <t t-call="web.external_layout">
+            <t t-call="web.html_container">
+                <!-- <t t-set="doc" t-value="docs" /> -->
+                <main class="article container h-100 w-100 bg-danger p-2">
+                    <div class="text-center my-4">
+                        <h3 class="text-muted" style="font-size: 40px;"> Estado: <t
+                                t-out="dict(request.env['equipment.allocations']._fields['state'].selection).get(docs.state)" />
+                        </h3>
+                    </div>
+                    <div class="oe_structure"></div>
+                    <table class="table table-bordered my-4" style="font-size: 20px;">
+                        <tbody>
+                            <t t-if="docs.employee_ids">
+                                <tr>
+                                    <th class="text-start p-2">Empleados</th>
+                                    <td class="text-start p-2">
+                                        <t
+                                            t-out="', '.join(emp.display_name for emp in docs.employee_ids)" />
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-if="docs.equipment_ids">
+                                <tr>
+                                    <th class="text-start p-2">Equipos</th>
+                                    <td class="text-start p-2">
+                                        <t
+                                            t-out="', '.join(eq.display_name for eq in docs.equipment_ids)" />
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <!-- <tr>
+                                <th class="text-start p-2">Empleados</th>
+                                <td class="text-start p-2">
+                                    <t
+                                        t-out="', '.join(emp.display_name for emp in docs.employee_ids)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-start p-2">Equipos</th>
+                                <td class="text-start p-2">
+                                    <t
+                                        t-out="', '.join(eq.display_name for eq in docs.equipment_ids)" />
+                                </td>
+                            </tr> -->
+
+                            <!-- <tr>
+                                <th class="text-start p-2 align-top">Empleados</th>
+                                <td class="text-start p-2">
+                                    <ul>
+                                        <t t-foreach="docs.employee_ids" t-as="emp">
+                                            <li>
+                                                <t t-esc="emp.display_name" />
+                                            </li>
+                                        </t>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-start p-2 align-top">Equipos</th>
+                                <td class="text-start p-2">
+                                    <ul>
+                                        <t t-foreach="docs.equipment_ids" t-as="eq">
+                                            <li>
+                                                <t t-esc="eq.display_name" />
+                                            </li>
+                                        </t>
+                                    </ul>
+                                </td>
+                            </tr> -->
+
+                            <tr>
+                                <th class="text-start p-2">Área</th>
+                                <td class="text-start p-2">
+                                    <t t-out="docs.area.name if docs.area else 'Sin área asignada'" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-start p-2">Tipo de Asignación</th>
+                                <td class="text-start p-2">
+                                    <t
+                                        t-out="dict(request.env['equipment.allocations']._fields['allocation_type'].selection).get(docs.allocation_type)" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <t t-if="docs.allocation_type == 'on_demand'">
+                        <h4 class="my-4 fw-bold" style="font-size: 30px;">Detalles de la Asignación</h4>
+                        <table class="table table-bordered" style="font-size: 20px;">
+                            <tbody>
+                                <tr>
+                                    <th class="text-start p-2">Fecha de asignación</th>
+                                    <td class="text-start p-2">
+                                        <t t-esc="docs.allocation_date" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start p-2">Duración</th>
+                                    <td class="text-start p-2">
+                                        <t t-esc="docs.duration" />
+                                        <t
+                                            t-out="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(docs.duration_type)" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start p-2">Fecha prevista de devolución</th>
+                                    <td class="text-start p-2">
+                                        <t t-esc="docs.return_date" />
+                                    </td>
+                                </tr>
+                                <tr t-if="docs.real_return_date">
+                                    <th class="text-start p-2">Fecha de devolución</th>
+                                    <td class="text-start p-2">
+                                        <t t-esc="docs.real_return_date" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <div class="oe_structure"></div>
+                    <div class="text-muted border border-dark rounded p-2"
+                        style="width:100%; height: 150px; font-size:18px;">
+                        <span>Firma</span>
+                    </div>
+                    <div class="oe_structure"></div>
+                </main>
+            </t>
+        </t>
+    </template>
+</odoo>

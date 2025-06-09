@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="my_module_hr_employee_view_form_context_patch" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.override.context</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_maintenance.hr_employee_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(maintenance.hr_equipment_action)d']"
+                position="replace">
+                <button name="%(maintenance.hr_equipment_action)d"
+                    context="{'search_default_employee_ids': [id], 'default_employee_ids': [id]}"
+                    groups="maintenance.group_equipment_manager"
+                    class="o_stat_button"
+                    icon="fa-cubes"
+                    type="action">
+                    <field name="equipment_count_total" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="my_equipment_search_inherit" model="ir.ui.view">
+        <field name="name">maintenance.equipment.search.inherit.employee_ids</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <!-- <filter name="employee_ids" string="Empleado" domain="[]"
+                    context="{'group_by':'employee_ids'}" /> -->
+                <field name="employee_ids" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
