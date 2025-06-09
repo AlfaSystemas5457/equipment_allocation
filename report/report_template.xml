@@ -2,12 +2,13 @@
 <odoo>
     <!-- Registro del Reporte -->
     <record id="report_template_id" model="ir.actions.report">
-        <field name="name">Report Equipment Allocation</field>
+        <field name="name">Reporte de asignación de equipo</field>
         <field name="model">equipment.allocations</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">equipment_allocation.report_template</field>
         <field name="report_file">equipment_allocation.report_template</field>
-        <field name="print_report_name">'Report ' + 'equipment ' + (object.name or 'Without name')</field>
+        <field name="print_report_name">'Report ' + 'equipment ' + (object.uid or object.name or
+            'Without name')</field>
         <field name="binding_model_id" ref="equipment_allocation.model_equipment_allocations" />
         <field name="binding_type">report</field>
     </record>

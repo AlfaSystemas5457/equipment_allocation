@@ -4,7 +4,7 @@
         <field name="name">equipment.allocations.view.form</field>
         <field name="model">equipment.allocations</field>
         <field name="arch" type="xml">
-            <form>
+            <form delete="false">
                 <header>
                     <button name="handle_allocated" type="object" string="Asignar"
                         class="bg-primary text-light " invisible="state != 'draft'" />
@@ -63,7 +63,7 @@
                         <page string="Equipos">
                             <field name="equipment_ids" readonly="state not in ['draft']" />
                         </page>
-                        <page string="Equipos Anteriores" invisible="before_equipment_ids == False">
+                        <page string="Equipos Anteriores">
                             <field name="before_equipment_ids" readonly="state not in ['draft']" />
                         </page>
                         <page string="Descripción">
@@ -80,7 +80,7 @@
         <field name="name">equipment.allocations.view.list</field>
         <field name="model">equipment.allocations</field>
         <field name="arch" type="xml">
-            <list>
+            <list delete="false">
                 <field name="uid" />
                 <field name="name" />
                 <field name="create_date" string="Fecha de creación" />

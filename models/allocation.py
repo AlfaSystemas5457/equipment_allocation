@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -79,6 +79,9 @@ class Allocations(models.Model):
             vals['uid'] = self.env['ir.sequence'].next_by_code(
                 'equipment.allocations') or '/'
         return super(Allocations, self).create(vals)
+
+    def unlink(self):
+        raise exceptions.UserError("No está permitido eliminar registros.")
 
     @api.onchange('duration', 'duration_type')
     def update_return_date(self):

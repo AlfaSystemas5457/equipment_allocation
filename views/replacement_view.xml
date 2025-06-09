@@ -4,7 +4,7 @@
         <field name="name">equipment.replacement.view.form</field>
         <field name="model">equipment.replacement</field>
         <field name="arch" type="xml">
-            <form>
+            <form delete="false">
                 <header>
                     <button name="handle_allocated" type="object" string="Asignar"
                         class="bg-primary text-light " invisible="state != 'draft'" />
@@ -54,7 +54,7 @@
         <field name="name">equipment.replacement.view.list</field>
         <field name="model">equipment.replacement</field>
         <field name="arch" type="xml">
-            <list>
+            <list delete="false">
                 <field name="uid" />
                 <field name="name" />
                 <field name="create_date" string="Fecha de creación" />

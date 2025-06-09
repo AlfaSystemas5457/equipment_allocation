@@ -5,7 +5,6 @@
         <field name="code">equipment.allocations</field>
         <field name="prefix">AE-</field>
         <field name="padding">5</field>
-        <field name="number_next">1</field>
         <field name="number_increment">1</field>
     </record>
 
@@ -14,7 +13,6 @@
         <field name="code">equipment.replacement</field>
         <field name="prefix">RE-</field>
         <field name="padding">5</field>
-        <field name="number_next">1</field>
         <field name="number_increment">1</field>
     </record>
 </odoo>

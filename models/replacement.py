@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import date
 
 
@@ -12,7 +12,12 @@ class Replacement(models.Model):
     name = fields.Char('Nombre', tracking=True, required=True)
     uid = fields.Char('UID', readonly=True, copy=False, index=True)
     uid_replacement = fields.Many2one(
-        'equipment.allocations', string='UID para reemplazar', tracking=True, required=True, domain="[('state', 'not in', ['rejected', 'returned'])]")
+        'equipment.allocations',
+        string='UID para reemplazar',
+        tracking=True,
+        required=True,
+        domain="[('state', 'not in', ['rejected', 'returned']), ('has_replacement', '=', False)]"
+    )
 
     employee_ids = fields.Many2many(
         'hr.employee', string='Empleados', tracking=True, required=True)
@@ -87,6 +92,9 @@ class Replacement(models.Model):
                         record.allocation_type = allocation.allocation_type
 
         return result
+
+    def unlink(self):
+        raise exceptions.UserError("No está permitido eliminar registros.")
 
     @api.onchange('uid_replacement')
     def adding_data(self):
