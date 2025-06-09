@@ -10,8 +10,6 @@
                         class="bg-primary text-light " invisible="state != 'draft'" />
                     <button name="handle_rejected" type="object" string="Rechazar"
                         class="bg-secondary text-dark" invisible="state != 'draft'" />
-                    <button name="handle_draft" type="object" string="Borrador"
-                        class="bg-secondary text-dark" />
 
                     <field name="state" widget="statusbar" />
                 </header>

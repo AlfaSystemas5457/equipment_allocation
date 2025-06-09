@@ -12,8 +12,6 @@
                         class="bg-secondary text-dark" invisible="state != 'draft'" />
                     <button name="handle_returned" type="object" string="Devuelto"
                         class="bg-secondary text-dark" invisible="state != 'allocated'" />
-                    <button name="handle_draft" type="object" string="Borrador"
-                        class="bg-secondary text-dark" />
 
                     <field name="state" widget="statusbar" />
                 </header>
@@ -46,10 +44,10 @@
                             <div invisible="allocation_type != 'on_demand'">
                                 <field name="duration" class="oe_inline"
                                     required="allocation_type == 'on_demand'"
-                                    readonly="state not in ['draft']" />
+                                    readonly="state not in ['draft', 'allocated']" />
                                 <field name="duration_type"
                                     required="allocation_type == 'on_demand'" class="oe_inline"
-                                    readonly="state not in ['draft']" />
+                                    readonly="state not in ['draft', 'allocated']" />
                             </div>
                             <field name="allocation_date"
                                 readonly="1" invisible="allocation_date == False" force_save="1" />
