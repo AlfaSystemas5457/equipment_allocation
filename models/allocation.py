@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, exceptions
-from datetime import date
+from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class Allocations(models.Model):
@@ -82,6 +85,42 @@ class Allocations(models.Model):
 
     def unlink(self):
         raise exceptions.UserError("No está permitido eliminar registros.")
+
+    @api.model
+    def _notify_upcoming_returns(self):
+        send_emails = self.env['ir.config_parameter'].sudo().get_param(
+            'equipment_allocation.enable_return_emails')
+
+        today = date.today()
+        notify_days = 3
+        target_date = today + timedelta(days=notify_days)
+
+        records = self.search([
+            ('return_date', '=', target_date),
+            ('state', '=', 'allocated')
+        ])
+
+        template = self.env.ref(
+            'equipment_allocation.mail_template_equipment_return_reminder')
+
+        for record in records:
+            if template:
+                try:
+                    if send_emails and record.employee_ids.work_email:
+                        template.send_mail(
+                            record.id, force_send=True, raise_exception=True)
+                    else:
+                        record.message_post(
+                            body="Recordatorio: debe devolver sus equipos asignados.",
+                            subject="🔔 Recordatorio de Devolución",
+                            message_type="comment"
+                        )
+                        _logger.info(
+                            f"Internal notification sent to {record.name} (withoout email)")
+
+                except Exception as e:
+                    _logger.error(
+                        f"Error sending email for registration {record.name}: {str(e)}")
 
     @api.onchange('duration', 'duration_type')
     def update_return_date(self):

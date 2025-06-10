@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_equipment_return_reminder" model="mail.template">
+        <field name="name">Recordatorio Devolución de Equipos</field>
+        <field name="model_id" ref="equipment_allocation.model_equipment_allocations" />
+        <field name="subject">🔔 Recordatorio: Devolución de equipos asignados</field>
+        <field name="email_from">{{ object.env.company.email }}</field>
+        <field name="email_to">{{ object.employee_ids.work_email }}</field>
+        <field name="body_html">
+            <![CDATA[
+                <div>
+                    <p>Buen día, 
+                        <t t-out="', '.join([emp.name for emp in object.employee_ids])"/>
+                    </p>
+                    <p>
+                        Los siguientes equipos asignados a usted deben ser devueltos el 
+                        <strong><t t-out="object.return_date.strftime('%d/%m/%Y')"/></strong>:
+                    </p>
+                    <ul>
+                        <t t-foreach="object.equipment_ids" t-as="eq">
+                            <li><t t-out="eq.name"/></li>
+                        </t>
+                    </ul>
+                    <p>Gracias.</p>
+                </div>
+            ]]>
+        </field>
+    </record>
+</odoo>

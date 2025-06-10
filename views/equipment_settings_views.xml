@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_equipment_settings_form" model="ir.ui.view">
+        <field name="name">equipment.settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="maintenance.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='maintenance']" position="inside">
+                <block title="Recordatorios de devolución">
+                    <setting
+                        help="Si está activado, se enviarán correos automáticos a los
+                                empleados antes de la fecha de devolución de los equipos
+                                asignados.">
+                        <field name="enable_return_emails" />
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <data noupdate="1">
+        <function model="ir.config_parameter" name="set_param">
+            <value eval="'equipment_allocation.enable_return_emails'" />
+            <value eval="'True'" />
+        </function>
+    </data>
+</odoo>
