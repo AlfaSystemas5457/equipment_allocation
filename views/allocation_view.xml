@@ -81,13 +81,14 @@
         <field name="model">equipment.allocations</field>
         <field name="arch" type="xml">
             <list delete="false">
-                <field name="uid" />
+                <field name="uid" decoration-bf="1" width="100" />
                 <field name="name" />
-                <field name="create_date" string="Fecha de creación" />
-                <field name="request_date" />
-                <field name="return_date" />
-                <field name="area" />
-                <field name="state" />
+                <field name="allocation_type" width="200" />
+                <field name="create_date" string="Fecha de creación" width="200" />
+                <field name="request_date" width="200" />
+                <field name="real_return_date" width="200" />
+                <field name="area" width="200" />
+                <field name="state" width="200" />
             </list>
         </field>
     </record>

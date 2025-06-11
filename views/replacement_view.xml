@@ -55,12 +55,12 @@
         <field name="model">equipment.replacement</field>
         <field name="arch" type="xml">
             <list delete="false">
-                <field name="uid" />
+                <field name="uid" width="100" decoration-bf="1" />
                 <field name="name" />
-                <field name="create_date" string="Fecha de creación" />
-                <field name="request_date" />
-                <field name="area" />
-                <field name="state" />
+                <field name="create_date" string="Fecha de creación" width="200" />
+                <field name="request_date" width="200" />
+                <field name="area" width="200" />
+                <field name="state" width="200" />
             </list>
         </field>
     </record>
