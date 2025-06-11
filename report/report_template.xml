@@ -12,50 +12,40 @@
             'Without name')</field>
         <field name="binding_model_id" ref="equipment_allocation.model_equipment_allocations" />
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="equipment_allocation.custom_paperformat_a4_landscape" />
     </record>
 
     <!-- Plantilla del Reporte -->
     <template id="report_template">
         <t t-call="web.external_layout">
             <t t-call="web.html_container">
-                <main class="article container h-100 w-100 bg-danger p-2">
-                    <div class="text-center my-4">
-                        <h3 class="text-muted" style="font-size: 40px;">
-                            <t t-esc="docs.uid" /> Estado: <t
+                <main class="article container h-100 w-100 p-2">
+                    <div class="text-center mb-2">
+                        <h3 class="text-muted fs-1">
+                            <t t-esc="docs.uid" /> - <t
                                 t-out="dict(request.env['equipment.allocations']._fields['state'].selection).get(docs.state)" />
                         </h3>
                     </div>
-                    <div class="oe_structure"></div>
-                    <table class="table table-bordered my-4" style="font-size: 20px;">
-                        <tbody>
-                            <t t-if="docs.employee_ids">
-                                <tr>
-                                    <th class="text-start p-2">Empleados</th>
-                                    <td class="text-start p-2">
-                                        <t
-                                            t-out="', '.join(emp.display_name for emp in docs.employee_ids)" />
-                                    </td>
-                                </tr>
-                            </t>
-                            <t t-if="docs.equipment_ids">
-                                <tr>
-                                    <th class="text-start p-2">Equipos</th>
-                                    <td class="text-start p-2">
-                                        <t
-                                            t-out="', '.join(eq.display_name for eq in docs.equipment_ids)" />
-                                    </td>
-                                </tr>
-                            </t>
-
+                    <div class="oe_structure" />
+                    <table class="table table-borderless" style="table-layout: fixed">
+                        <thead>
                             <tr>
-                                <th class="text-start p-2">Área</th>
-                                <td class="text-start p-2">
+                                <th t-if="docs.employee_ids" class="text-center py-1 px-2 fs-5">
+                                    Empleados</th>
+                                <th class="text-center py-1 px-2 fs-5">Área</th>
+                                <th class="text-center py-1 px-2 fs-5">Tipo de Asignación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td t-if="docs.employee_ids" class="text-center p-1 fs-6">
+                                    <t
+                                        t-out="', '.join(emp.display_name for emp in docs.employee_ids)" />
+                                </td>
+                                <td class="text-center p-1 fs-6">
                                     <t t-out="docs.area.name if docs.area else 'Sin área asignada'" />
                                 </td>
-                            </tr>
-                            <tr>
-                                <th class="text-start p-2">Tipo de Asignación</th>
-                                <td class="text-start p-2">
+                                <td class="text-center p-1 fs-6">
                                     <t
                                         t-out="dict(request.env['equipment.allocations']._fields['allocation_type'].selection).get(docs.allocation_type)" />
                                 </td>
@@ -63,44 +53,73 @@
                         </tbody>
                     </table>
                     <t t-if="docs.allocation_type == 'on_demand'">
-                        <h4 class="my-4 fw-bold" style="font-size: 30px;">Detalles de la Asignación</h4>
-                        <table class="table table-bordered" style="font-size: 20px;">
+                        <h4 class="fw-bold fs-3">Detalles de la Asignación</h4>
+                        <table class="table table-borderless"
+                            style="table-layout: fixed">
+                            <thead>
+                                <tr>
+                                    <th class="text-center py-1 px-2 fs-5">F. asignación</th>
+                                    <th class="text-center py-1 px-2 fs-5">Duración</th>
+                                    <th class="text-center py-1 px-2 fs-5">F. prev</th>
+                                    <th t-if="docs.real_return_date" class="text-center p-1 fs-5">F.
+                                        devolución</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
-                                    <th class="text-start p-2">Fecha de asignación</th>
-                                    <td class="text-start p-2">
+                                    <td class="text-center p-1 fs-6">
                                         <t t-esc="docs.allocation_date.strftime('%d-%m-%Y')" />
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th class="text-start p-2">Duración</th>
-                                    <td class="text-start p-2">
+                                    <td class="text-center p-1 fs-6">
                                         <t t-esc="docs.duration" />
                                         <t
                                             t-out="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(docs.duration_type)" />
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th class="text-start p-2">Fecha prevista de devolución</th>
-                                    <td class="text-start p-2">
+                                    <td class="text-center p-1 fs-6">
                                         <t t-esc="docs.return_date.strftime('%d-%m-%Y')" />
                                     </td>
-                                </tr>
-                                <tr t-if="docs.real_return_date">
-                                    <th class="text-start p-2">Fecha de devolución</th>
-                                    <td class="text-start p-2">
+                                    <td t-if="docs.real_return_date" class="text-center p-1 fs-6">
                                         <t t-esc="docs.real_return_date.strftime('%d-%m-%Y')" />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </t>
-                    <div class="oe_structure"></div>
+                    <t t-if="docs.equipment_ids">
+                        <h4 class="fw-bold fs-3">Equipos Asignados</h4>
+                        <table class="table table-borderless"
+                            style="table-layout: fixed">
+                            <thead>
+                                <tr>
+                                    <th class="text-start py-1 px-2 fs-5">Nombre del Equipo</th>
+                                    <th class="text-start py-1 px-2 fs-5">Categoría</th>
+                                    <th class="text-start py-1 px-2 fs-5">Número de Serie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs.equipment_ids" t-as="eq" t-index="i">
+                                    <tr>
+                                        <td class="text-start text-nowrap p-1 fs-6">
+                                            <t t-esc="eq.name" />
+                                        </td>
+                                        <td class="text-start text-nowrap p-1 fs-6">
+                                            <t t-esc="eq.category_id.name if eq.category_id else ''" />
+                                        </td>
+                                        <td class="text-start text-nowrap p-1 fs-6">
+                                            <t t-esc="eq.serial_no or ''" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <div class="oe_structure" />
                     <div class="text-muted border border-dark rounded p-2"
                         style="width:100%; height: 150px; font-size:18px;">
                         <span>Firma</span>
                     </div>
-                    <div class="oe_structure"></div>
+                    <div class="oe_structure" />
                 </main>
             </t>
         </t>

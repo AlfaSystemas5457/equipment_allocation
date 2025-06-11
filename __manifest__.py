@@ -19,6 +19,7 @@
         'data/email_template.xml',
         'views/cron.xml',
         'data/uid_sequence_view.xml',
+        'report/paper_format.xml',
         'report/report_template.xml',
         'views/employee_view.xml',
         'views/menu_view.xml',
