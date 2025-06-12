@@ -30,7 +30,7 @@
                     <table class="table table-borderless" style="table-layout: fixed">
                         <thead>
                             <tr>
-                                <th t-if="docs.employee_ids" class="text-center py-1 px-2 fs-5">
+                                <th t-if="docs.employee_id" class="text-center py-1 px-2 fs-5">
                                     Empleados</th>
                                 <th class="text-center py-1 px-2 fs-5">Área</th>
                                 <th class="text-center py-1 px-2 fs-5">Tipo de Asignación</th>
@@ -38,9 +38,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td t-if="docs.employee_ids" class="text-center p-1 fs-6">
-                                    <t
-                                        t-out="', '.join(emp.display_name for emp in docs.employee_ids)" />
+                                <td t-if="docs.employee_id" class="text-center p-1 fs-6">
+                                    <t t-out="docs.employee_id.display_name" />
                                 </td>
                                 <td class="text-center p-1 fs-6">
                                     <t t-out="docs.area.name if docs.area else 'Sin área asignada'" />

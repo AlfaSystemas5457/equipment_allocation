@@ -16,8 +16,8 @@ class Allocations(models.Model):
     name = fields.Char('Nombre', tracking=True, required=True)
     uid = fields.Char('UID', readonly=True, copy=False, index=True)
 
-    employee_ids = fields.Many2many(
-        'hr.employee', string='Empleados', tracking=True, required=True)
+    employee_id = fields.Many2one(
+        'hr.employee', string='Empleado', tracking=True, required=True)
     equipment_ids = fields.Many2many(
         'maintenance.equipment',
         'equipment_allocations_rel',
@@ -25,7 +25,7 @@ class Allocations(models.Model):
         'equipment_id',
         string='Equipos',
         tracking=True,
-        domain="[('employee_ids', '=', False)]",
+        domain="[('employee_id', '=', False)]",
         required=True
     )
 
@@ -106,7 +106,7 @@ class Allocations(models.Model):
         for record in records:
             if template:
                 try:
-                    if send_emails and record.employee_ids.work_email:
+                    if send_emails and record.employee_id.work_email:
                         template.send_mail(
                             record.id, force_send=True, raise_exception=True)
                     else:
@@ -167,8 +167,8 @@ class Allocations(models.Model):
             ]
         )
 
-        for employee in equipment_ids:
-            employee.employee_ids = self.employee_ids
+        for equipment_line in equipment_ids:
+            equipment_line.employee_id = self.employee_id
 
         self.state = 'allocated'
 
@@ -183,7 +183,7 @@ class Allocations(models.Model):
         )
 
         for equipment_line in equipment_ids:
-            equipment_line.employee_ids = [(5, 0, 0)]
+            equipment_line.employee_id = False
 
         if self.has_replacement:
             replacement = self.env['equipment.replacement'].search(
@@ -208,7 +208,7 @@ class Allocations(models.Model):
         )
 
         for equipment_line in equipment_ids:
-            equipment_line.employee_ids = [(5, 0, 0)]
+            equipment_line.employee_id = False
 
         self.state = 'rejected'
 

@@ -19,10 +19,10 @@ class Replacement(models.Model):
         domain="[('state', 'not in', ['rejected', 'returned']), ('has_replacement', '=', False)]"
     )
 
-    employee_ids = fields.Many2many(
-        'hr.employee', string='Empleados', tracking=True, required=True)
+    employee_id = fields.Many2one(
+        'hr.employee', string='Empleado', tracking=True, required=True)
     equipment_ids = fields.Many2many(
-        'maintenance.equipment', string='Equipos', tracking=True, domain="[('employee_ids', '=', False)]", required=True)
+        'maintenance.equipment', string='Equipos', tracking=True, domain="[('employee_id', '=', False)]", required=True)
 
     allocation_type = fields.Selection(
         [
@@ -57,8 +57,7 @@ class Replacement(models.Model):
                 vals['uid_replacement'])
             if allocation:
                 vals.setdefault('area', allocation.area.id)
-                vals.setdefault('employee_ids', [
-                                (6, 0, allocation.employee_ids.ids)])
+                vals.setdefault('employee_id', allocation.employee_id.id)
                 vals.setdefault('equipment_ids', [
                                 (6, 0, allocation.equipment_ids.ids)])
                 vals.setdefault('allocation_type', allocation.allocation_type)
@@ -80,9 +79,8 @@ class Replacement(models.Model):
                     if not record.area:
                         record.area = allocation.area
 
-                    if not record.employee_ids:
-                        record.employee_ids = [
-                            (6, 0, allocation.employee_ids.ids)]
+                    if not record.employee_id:
+                        record.employee_id = allocation.employee_id.id
 
                     if not record.equipment_ids:
                         record.equipment_ids = [
@@ -110,7 +108,7 @@ class Replacement(models.Model):
         self.name = allocation.name
         self.allocation_type = allocation.allocation_type
         self.area = allocation.area
-        self.employee_ids = allocation.employee_ids
+        self.employee_id = allocation.employee_id
         self.equipment_ids = allocation.equipment_ids
 
     def handle_allocated(self):
@@ -133,7 +131,7 @@ class Replacement(models.Model):
         )
 
         for equipment_line in equipment_ids:
-            equipment_line.employee_ids = [(5, 0, 0)]
+            equipment_line.employee_id = False
 
         allocations.equipment_ids = self.equipment_ids
 
@@ -145,7 +143,7 @@ class Replacement(models.Model):
         )
 
         for employee in equipment_ids:
-            employee.employee_ids = self.employee_ids
+            employee.employee_id = self.employee_id
 
         self.state = 'allocated'
 
@@ -156,6 +154,7 @@ class Replacement(models.Model):
             ], limit=1
         )
 
+        # posible bug
         if replacement:
             replacement.write({
                 'has_replacement': False
