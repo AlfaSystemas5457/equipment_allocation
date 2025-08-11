@@ -45,7 +45,7 @@ class Allocations(models.Model):
         ], string='Tipo de asignación', tracking=True, default='on_demand'
     )
     request_date = fields.Date(
-        'Fecha de solicitud', tracking=True, default=date.today())
+        'Fecha de solicitud', tracking=True, default=lambda self: date.today())
     allocation_date = fields.Date('Fecha de asignación', tracking=True)
     return_date = fields.Date('Fecha prevista de devolución', tracking=True)
     real_return_date = fields.Date('Fecha de devolución', tracking=True)

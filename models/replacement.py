@@ -31,7 +31,7 @@ class Replacement(models.Model):
         ], string='Tipo de asignación', tracking=True, default='on_demand'
     )
     request_date = fields.Date(
-        'Fecha de solicitud', tracking=True, default=date.today())
+        'Fecha de solicitud', tracking=True, default=lambda self: date.today())
 
     area = fields.Many2one('equipment.area', string='Area',
                            tracking=True, required=True)
