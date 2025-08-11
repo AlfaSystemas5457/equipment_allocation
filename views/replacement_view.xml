@@ -7,9 +7,12 @@
             <form delete="false">
                 <header>
                     <button name="handle_allocated" type="object" string="Asignar"
-                        class="bg-primary text-light " invisible="state != 'draft'" />
+                        class="oe_highlight " invisible="state != 'draft'" />
                     <button name="handle_rejected" type="object" string="Rechazar"
-                        class="bg-secondary text-dark" invisible="state != 'draft'" />
+                        class="oe_stat_button" invisible="state != 'draft'" />
+                    <button name="handle_draft" type="object" string="Restablecer a borrador"
+                        class="oe_stat_button"
+                        groups="equipment_allocation.group_equipment_replacement_access" />
 
                     <field name="state" widget="statusbar" />
                 </header>
