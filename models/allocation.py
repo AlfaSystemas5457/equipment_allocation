@@ -12,6 +12,7 @@ class Allocations(models.Model):
     _name = 'equipment.allocations'
     _description = 'Asiganción de equipo'
     _inherit = ['mail.thread']
+    _order = 'uid DESC'
 
     name = fields.Char('Nombre', tracking=True, required=True)
     uid = fields.Char('UID', readonly=True, copy=False, index=True)
