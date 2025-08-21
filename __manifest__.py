@@ -27,6 +27,7 @@
         'views/equipment_settings_views.xml',
         'views/allocation_view.xml',
         'views/replacement_view.xml',
+        'views/maintenance_hr_equipment_employee_view_form.xml',
     ],
     'auto_install': False,
     'application': False,
