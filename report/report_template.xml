@@ -53,31 +53,40 @@
                     </table>
                     <t t-if="docs.allocation_type == 'on_demand'">
                         <h4 class="fw-bold fs-3">Detalles de la Asignación</h4>
-                        <table class="table table-borderless"
-                            style="table-layout: fixed">
+                        <table class="table table-borderless" style="table-layout: fixed">
                             <thead>
                                 <tr>
-                                    <th class="text-center py-1 px-2 fs-5">F. asignación</th>
-                                    <th class="text-center py-1 px-2 fs-5">Duración</th>
-                                    <th class="text-center py-1 px-2 fs-5">F. prev</th>
-                                    <th t-if="docs.real_return_date" class="text-center p-1 fs-5">F.
-                                        devolución</th>
+                                    <th class="text-center py-1 px-2 fs-5" t-if="docs.request_date">F.
+                                        Solicitud</th>
+                                    <th class="text-center py-1 px-2 fs-5"
+                                        t-if="docs.allocation_date">F. asignación</th>
+                                    <th class="text-center py-1 px-2 fs-5" t-if="docs.duration">
+                                        Duración</th>
+                                    <th class="text-center py-1 px-2 fs-5" t-if="docs.return_date">F.
+                                        prev</th>
+                                    <th class="text-center py-1 px-2 fs-5"
+                                        t-if="docs.real_return_date">F. devolución</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="text-center p-1 fs-6">
-                                        <t t-esc="docs.allocation_date.strftime('%d-%m-%Y')" />
+                                    <td class="text-center p-1 fs-6" t-if="docs.request_date">
+                                        <t t-esc="docs.request_date.strftime('%d-%m-%Y')"
+                                            t-if="docs.request_date" />
                                     </td>
-                                    <td class="text-center p-1 fs-6">
+                                    <td class="text-center p-1 fs-6" t-if="docs.allocation_date">
+                                        <t t-esc="docs.allocation_date.strftime('%d-%m-%Y')"
+                                            t-if="docs.allocation_date" />
+                                    </td>
+                                    <td class="text-center p-1 fs-6" t-if="docs.duration">
                                         <t t-esc="docs.duration" />
                                         <t
                                             t-out="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(docs.duration_type)" />
                                     </td>
-                                    <td class="text-center p-1 fs-6">
+                                    <td class="text-center p-1 fs-6" t-if="docs.return_date">
                                         <t t-esc="docs.return_date.strftime('%d-%m-%Y')" />
                                     </td>
-                                    <td t-if="docs.real_return_date" class="text-center p-1 fs-6">
+                                    <td class="text-center p-1 fs-6" t-if="docs.real_return_date">
                                         <t t-esc="docs.real_return_date.strftime('%d-%m-%Y')" />
                                     </td>
                                 </tr>
