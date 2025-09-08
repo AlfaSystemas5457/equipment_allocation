@@ -77,6 +77,14 @@ class Allocations(models.Model):
     has_replacement = fields.Boolean(
         'Reemplazo?', default=False, tracking=True)
 
+    def copy(self, default=None):
+        default = default or {}
+        default['name'] = f"{self.name} (Copia)"
+        default['state'] = f"draft"
+        default['has_replacement'] = False
+        default['before_equipment_ids'] = False
+        return super(Allocations, self).copy(default)
+
     @api.model
     def create(self, vals):
         if not vals.get('uid'):

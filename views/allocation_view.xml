@@ -68,7 +68,7 @@
                         <page string="Equipos">
                             <field name="equipment_ids" readonly="state not in ['draft']" />
                         </page>
-                        <page string="Equipos Anteriores">
+                        <page string="Equipos Anteriores" invisible="not before_equipment_ids">
                             <field name="before_equipment_ids" readonly="state not in ['draft']" />
                         </page>
                         <page string="Descripción">
