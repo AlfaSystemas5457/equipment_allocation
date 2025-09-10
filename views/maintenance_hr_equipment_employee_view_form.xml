@@ -9,7 +9,7 @@
                 <field name="employee_id"
                     widget="badge"
                     readonly="1"
-                    invisible="not employee_id" />
+                    attrs="{'invisible': [('employee_id', '=', False)]}" />
             </xpath>
             <xpath expr="//field[@name='department_id']" position="replace">
                 <field name="department_id" string="Department" invisible="1" />

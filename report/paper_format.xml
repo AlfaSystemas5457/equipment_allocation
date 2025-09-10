@@ -13,8 +13,6 @@
         <field name="margin_right">0</field>
         <field name="header_line" eval="False" />
         <field name="header_spacing">32</field>
-        <field name="disable_shrinking" eval="False" />
         <field name="dpi">90</field>
-        <field name="css_margins" eval="True" />
     </record>
 </odoo>

@@ -4,12 +4,12 @@
         <field name="name">equipment.replacement.view.form</field>
         <field name="model">equipment.replacement</field>
         <field name="arch" type="xml">
-            <form delete="false" duplicate="false">
+            <form string="Reemplazo de equipo">
                 <header>
                     <button name="handle_allocated" type="object" string="Asignar"
-                        class="oe_highlight " invisible="state != 'draft'" />
+                        class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}" />
                     <button name="handle_rejected" type="object" string="Rechazar"
-                        class="oe_stat_button" invisible="state != 'draft'" />
+                        class="oe_stat_button" attrs="{'invisible': [('state', '!=', 'draft')]}" />
                     <button name="handle_draft" type="object" string="Restablecer a borrador"
                         class="oe_stat_button"
                         groups="equipment_allocation.group_equipment_replacement_access" />
@@ -21,9 +21,10 @@
                         <div class="o_row">
                             <field name="uid" readonly="1" />
                         </div>
+                        <br />
                         <h1 class="o_row">
                             <field name="uid_replacement" placeholder="Reemplazo de equipo"
-                                readonly="state not in ['draft']" />
+                                attrs="{'readonly': [('state', 'not in', ['draft'])]}" />
                         </h1>
                     </div>
                     <group>
@@ -41,37 +42,42 @@
                     </group>
                     <notebook>
                         <page string="Equipos">
-                            <field name="equipment_ids" readonly="state not in ['draft']" />
+                            <field name="equipment_ids"
+                                attrs="{'readonly': [('state', 'not in', ['draft'])]}" />
                         </page>
                         <page string="Descripción">
-                            <field name="description" readonly="state not in ['draft']" />
+                            <field name="description"
+                                attrs="{'readonly': [('state', 'not in', ['draft'])]}" />
                         </page>
                     </notebook>
                 </sheet>
-                <chatter />
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
             </form>
         </field>
     </record>
 
-    <record id="equipment_replacement_view_list" model="ir.ui.view">
-        <field name="name">equipment.replacement.view.list</field>
+    <record id="equipment_replacement_view_tree" model="ir.ui.view">
+        <field name="name">equipment.replacement.view.tree</field>
         <field name="model">equipment.replacement</field>
         <field name="arch" type="xml">
-            <list delete="false" duplicate="false">
-                <field name="uid" width="100" decoration-bf="1" />
+            <tree string="Reemplazo de equipos">
+                <field name="uid" width="100" />
                 <field name="name" />
                 <field name="create_date" string="Fecha de creación" width="200" />
                 <field name="request_date" width="200" />
                 <field name="area" width="200" />
                 <field name="state" width="200" />
-            </list>
+            </tree>
         </field>
     </record>
 
     <record id="equipment_replacement_action" model="ir.actions.act_window">
         <field name="name">Reemplazo de equipos</field>
         <field name="res_model">equipment.replacement</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Desde aquí puedes gestionar tus reemplazos.

@@ -18,7 +18,7 @@
         'security/ir.model.access.csv',
         'security/groups_security.xml',
         'data/email_template.xml',
-        'views/cron.xml',
+        'data/cron.xml',
         'data/uid_sequence_view.xml',
         'report/paper_format.xml',
         'report/report_template.xml',

@@ -23,7 +23,7 @@
                     <div class="text-center mb-2">
                         <h3 class="text-muted fs-1">
                             <t t-esc="docs.uid" /> - <t
-                                t-out="dict(request.env['equipment.allocations']._fields['state'].selection).get(docs.state)" />
+                                t-esc="dict(request.env['equipment.allocations']._fields['state'].selection).get(docs.state)" />
                         </h3>
                     </div>
                     <div class="oe_structure" />
@@ -39,14 +39,14 @@
                         <tbody>
                             <tr>
                                 <td t-if="docs.employee_id" class="text-center p-1 fs-6">
-                                    <t t-out="docs.employee_id.display_name" />
+                                    <t t-esc="docs.employee_id.display_name" />
                                 </td>
                                 <td class="text-center p-1 fs-6">
-                                    <t t-out="docs.area.name if docs.area else 'Sin área asignada'" />
+                                    <t t-esc="docs.area.name if docs.area else 'Sin área asignada'" />
                                 </td>
                                 <td class="text-center p-1 fs-6">
                                     <t
-                                        t-out="dict(request.env['equipment.allocations']._fields['allocation_type'].selection).get(docs.allocation_type)" />
+                                        t-esc="dict(request.env['equipment.allocations']._fields['allocation_type'].selection).get(docs.allocation_type)" />
                                 </td>
                             </tr>
                         </tbody>
@@ -81,7 +81,7 @@
                                     <td class="text-center p-1 fs-6" t-if="docs.duration">
                                         <t t-esc="docs.duration" />
                                         <t
-                                            t-out="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(docs.duration_type)" />
+                                            t-esc="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(docs.duration_type)" />
                                     </td>
                                     <td class="text-center p-1 fs-6" t-if="docs.return_date">
                                         <t t-esc="docs.return_date.strftime('%d-%m-%Y')" />

@@ -10,32 +10,32 @@ class Replacement(models.Model):
     _inherit = ['mail.thread']
     _order = 'uid DESC'
 
-    name = fields.Char('Nombre', tracking=True, required=True)
+    name = fields.Char('Nombre', track_visibility='onchange', track_sequence=2, required=True)
     uid = fields.Char('UID', readonly=True, copy=False, index=True)
     uid_replacement = fields.Many2one(
         'equipment.allocations',
         string='UID para reemplazar',
-        tracking=True,
+        track_visibility='onchange', track_sequence=2,
         required=True,
         domain="[('state', 'not in', ['rejected', 'returned']), ('has_replacement', '=', False)]"
     )
 
     employee_id = fields.Many2one(
-        'hr.employee', string='Empleado', tracking=True, required=True)
+        'hr.employee', string='Empleado', track_visibility='onchange', track_sequence=2, required=True)
     equipment_ids = fields.Many2many(
-        'maintenance.equipment', string='Equipos', tracking=True, domain="[('employee_id', '=', False)]", required=True)
+        'maintenance.equipment', string='Equipos', track_visibility='onchange', track_sequence=2, domain="[('employee_id', '=', False)]", required=True)
 
     allocation_type = fields.Selection(
         [
             ('on_demand', 'Bajo demanda'),
             ('permantent', 'Permanente'),
-        ], string='Tipo de asignación', tracking=True, default='on_demand'
+        ], string='Tipo de asignación', track_visibility='onchange', track_sequence=2, default='on_demand'
     )
     request_date = fields.Date(
-        'Fecha de solicitud', tracking=True, default=lambda self: date.today())
+        'Fecha de solicitud', track_visibility='onchange', track_sequence=2, default=lambda self: date.today())
 
     area = fields.Many2one('equipment.area', string='Area',
-                           tracking=True, required=True)
+                           track_visibility='onchange', track_sequence=2, required=True)
     description = fields.Text(string='Descripción')
     state = fields.Selection(
         [
@@ -44,27 +44,27 @@ class Replacement(models.Model):
             ('rejected', 'Rechazado'),
             ('returned', 'Devuelto')
         ],
-        default='draft', tracking=True, required=True, string='Estado'
+        default='draft', track_visibility='onchange', track_sequence=2, required=True, string='Estado'
     )
 
     @api.model
-    def create(self, vals):
-        if not vals.get('uid'):
-            vals['uid'] = self.env['ir.sequence'].next_by_code(
+    def create(self, vals_list):
+        if not vals_list.get('uid'):
+            vals_list['uid'] = self.env['ir.sequence'].next_by_code(
                 'equipment.replacement') or '/'
 
-        if vals.get('uid_replacement'):
+        if vals_list.get('uid_replacement'):
             allocation = self.env['equipment.allocations'].browse(
-                vals['uid_replacement'])
+                vals_list['uid_replacement'])
             if allocation:
-                vals.setdefault('area', allocation.area.id)
-                vals.setdefault('employee_id', allocation.employee_id.id)
-                vals.setdefault('equipment_ids', [
+                vals_list.setdefault('area', allocation.area.id)
+                vals_list.setdefault('employee_id', allocation.employee_id.id)
+                vals_list.setdefault('equipment_ids', [
                                 (6, 0, allocation.equipment_ids.ids)])
-                vals.setdefault('allocation_type', allocation.allocation_type)
-                vals.setdefault('name', allocation.name)
+                vals_list.setdefault('allocation_type', allocation.allocation_type)
+                vals_list.setdefault('name', allocation.name)
 
-        return super(Replacement, self).create(vals)
+        return super(Replacement, self).create(vals_list)
 
     def write(self, vals):
         result = super(Replacement, self).write(vals)

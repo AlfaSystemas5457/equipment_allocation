@@ -14,18 +14,18 @@ class Allocations(models.Model):
     _inherit = ['mail.thread']
     _order = 'uid DESC'
 
-    name = fields.Char('Nombre', tracking=True, required=True)
+    name = fields.Char('Nombre', track_visibility='onchange', track_sequence=2, required=True)
     uid = fields.Char('UID', readonly=True, copy=False, index=True)
 
     employee_id = fields.Many2one(
-        'hr.employee', string='Empleado', tracking=True, required=True)
+        'hr.employee', string='Empleado', track_visibility='onchange', track_sequence=2, required=True)
     equipment_ids = fields.Many2many(
         'maintenance.equipment',
         'equipment_allocations_rel',
         'allocation_id',
         'equipment_id',
         string='Equipos',
-        tracking=True,
+        track_visibility='onchange', track_sequence=2,
         domain="[('employee_id', '=', False)]",
         required=True
     )
@@ -36,33 +36,33 @@ class Allocations(models.Model):
         'allocation_id',
         'equipment_id',
         string='Equipos anteriores',
-        tracking=True
+        track_visibility='onchange', track_sequence=2
     )
 
     allocation_type = fields.Selection(
         [
             ('on_demand', 'Bajo demanda'),
             ('permantent', 'Permanente'),
-        ], string='Tipo de asignación', tracking=True, default='on_demand'
+        ], string='Tipo de asignación', track_visibility='onchange', track_sequence=2, default='on_demand'
     )
     request_date = fields.Date(
-        'Fecha de solicitud', tracking=True, default=lambda self: date.today())
-    allocation_date = fields.Date('Fecha de asignación', tracking=True)
-    return_date = fields.Date('Fecha prevista de devolución', tracking=True)
-    real_return_date = fields.Date('Fecha de devolución', tracking=True)
+        'Fecha de solicitud', track_visibility='onchange', track_sequence=2, default=lambda self: date.today())
+    allocation_date = fields.Date('Fecha de asignación', track_visibility='onchange', track_sequence=2)
+    return_date = fields.Date('Fecha prevista de devolución', track_visibility='onchange', track_sequence=2)
+    real_return_date = fields.Date('Fecha de devolución', track_visibility='onchange', track_sequence=2)
     duration = fields.Integer(
-        "Duración", tracking=True, default=1, required=True)
+        "Duración", track_visibility='onchange', track_sequence=2, default=1, required=True)
     duration_type = fields.Selection(
         [
             ('day', 'Dias'),
             ('week', 'Semanas'),
             ('month', 'Meses'),
             ('year', 'Años')
-        ], default="month", tracking=True, required=True, string='Tipo de duración'
+        ], default="month", track_visibility='onchange', track_sequence=2, required=True, string='Tipo de duración'
     )
 
     area = fields.Many2one('equipment.area', string='Area',
-                           tracking=True, required=True)
+                           track_visibility='onchange', track_sequence=2, required=True)
     description = fields.Text(string='Descripción')
     state = fields.Selection(
         [
@@ -71,11 +71,11 @@ class Allocations(models.Model):
             ('rejected', 'Rechazado'),
             ('returned', 'Devuelto')
         ],
-        default='draft', tracking=True, required=True, string='Estado'
+        default='draft', track_visibility='onchange', track_sequence=2, required=True, string='Estado'
     )
 
     has_replacement = fields.Boolean(
-        'Reemplazo?', default=False, tracking=True)
+        'Reemplazo?', default=False, track_visibility='onchange', track_sequence=2)
 
     def copy(self, default=None):
         default = default or {}
@@ -86,11 +86,11 @@ class Allocations(models.Model):
         return super(Allocations, self).copy(default)
 
     @api.model
-    def create(self, vals):
-        if not vals.get('uid'):
-            vals['uid'] = self.env['ir.sequence'].next_by_code(
+    def create(self, vals_list):
+        if not vals_list.get('uid'):
+            vals_list['uid'] = self.env['ir.sequence'].next_by_code(
                 'equipment.allocations') or '/'
-        return super(Allocations, self).create(vals)
+        return super(Allocations, self).create(vals_list)
 
     def unlink(self):
         raise exceptions.UserError("No está permitido eliminar registros.")
