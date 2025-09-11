@@ -68,6 +68,53 @@
         </field>
     </record>
 
+    <record id="equipment_replacement_search_view" model="ir.ui.view">
+        <field name="name">equipment.replacement.search</field>
+        <field name="model">equipment.replacement</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Reemplazo de Equipos">
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="area" />
+                <field name="allocation_type" />
+                <field name="state" />
+
+                <filter name="filter_draft"
+                    string="Borradores"
+                    domain="[('state','=','draft')]" />
+                <filter name="filter_allocated"
+                    string="Asignados"
+                    domain="[('state','=','allocated')]" />
+                <filter name="filter_rejected"
+                    string="Rechazados"
+                    domain="[('state','=','rejected')]" />
+                <filter name="filter_returned"
+                    string="Devueltos"
+                    domain="[('state','=','returned')]" />
+
+                <group expand="0" string="Agrupar por">
+                    <filter name="state"
+                        string="Estado"
+                        domain="[]"
+                        context="{'group_by': 'state'}" />
+                    <filter name="allocation_type"
+                        string="Tipo de Asignación"
+                        domain="[]"
+                        context="{'group_by': 'allocation_type'}" />
+                    <filter name="employee_id"
+                        string="Empleado"
+                        domain="[]"
+                        context="{'group_by': 'employee_id'}" />
+                    <filter name="area"
+                        string="Área"
+                        domain="[]"
+                        context="{'group_by': 'area'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+
     <record id="equipment_replacement_action" model="ir.actions.act_window">
         <field name="name">Reemplazo de equipos</field>
         <field name="res_model">equipment.replacement</field>

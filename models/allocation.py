@@ -176,8 +176,14 @@ class Allocations(models.Model):
             ]
         )
 
+        errors = []
         for equipment_line in equipment_ids:
+            if equipment_line.employee_id:
+                errors.append(f"El equipo {equipment_line.display_name}, ya esta asignado.")
             equipment_line.employee_id = self.employee_id
+        
+        if errors:
+            raise exceptions.UserError("\n".join(errors))
 
         self.state = 'allocated'
 
