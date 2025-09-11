@@ -114,6 +114,9 @@ class Replacement(models.Model):
 
     def handle_allocated(self):
         self.ensure_one()
+        
+        if self.uid_replacement.state != 'allocated':
+            raise exceptions.UserError("No se ha asignado ningún equipo.")
 
         allocations = self.env['equipment.allocations'].search(
             [
@@ -123,8 +126,10 @@ class Replacement(models.Model):
 
         allocations.has_replacement = True
         allocations.before_equipment_ids = allocations.equipment_ids
+        
+        filtered_equipment = allocations.equipment_ids.filtered(lambda x: x.employee_id.id == self.employee_id.id)
 
-        ids = [data.id for data in allocations.equipment_ids]
+        ids = [data.id for data in filtered_equipment]
         equipment_ids = self.env['maintenance.equipment'].search(
             [
                 ('id', 'in', ids)
@@ -142,9 +147,15 @@ class Replacement(models.Model):
                 ('id', 'in', ids)
             ]
         )
-
-        for employee in equipment_ids:
-            employee.employee_id = self.employee_id
+        
+        errors = []
+        for employee_equipment in equipment_ids:
+            if employee_equipment.employee_id:
+                errors.append(f"El equipo {employee_equipment.display_name}, ya esta asignado.")
+            employee_equipment.employee_id = self.employee_id
+        
+        if errors:
+            raise exceptions.UserError("\n".join(errors))
 
         self.state = 'allocated'
 

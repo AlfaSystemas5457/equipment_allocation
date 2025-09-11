@@ -102,7 +102,6 @@
                 <field name="area" />
                 <field name="allocation_type" />
                 <field name="state" />
-                <field name="request_date" />
 
                 <filter name="filter_draft"
                     string="Borradores"
