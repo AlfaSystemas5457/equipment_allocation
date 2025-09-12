@@ -36,7 +36,7 @@ class Replacement(models.Model):
 
     area = fields.Many2one('equipment.area', string='Area',
                            tracking=True, required=True)
-    description = fields.Text(string='Descripción')
+    description = fields.Html(string='Descripción')
     state = fields.Selection(
         [
             ('draft', 'Nuevo'),

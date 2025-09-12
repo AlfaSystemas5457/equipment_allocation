@@ -10,8 +10,8 @@
                         class="oe_highlight" invisible="state != 'draft'" />
                     <button name="handle_rejected" type="object" string="Rechazar"
                         class="oe_stat_button" invisible="state != 'draft'" />
-                    <button name="handle_returned" type="object" string="Devuelto"
-                        class="oe_stat_button" invisible="state != 'allocated'" />
+                    <button name="open_return_wizard" string="Devolver Equipos" type="object"
+                        class="oe_highlight" invisible="state != 'allocated'" />
                     <button name="handle_draft" type="object" string="Restablecer a borrador"
                         class="oe_stat_button"
                         groups="equipment_allocation.group_equipment_allocations_access" />
@@ -74,6 +74,12 @@
                         <page string="Descripción">
                             <field name="description" readonly="state not in ['draft']" />
                         </page>
+                        <page string="Descripción de devolución"
+                            invisible="real_return_date == False">
+                            <field name="return_description"
+                                readonly="state not in ['draft']" />
+                        </page>
+
                     </notebook>
                 </sheet>
                 <chatter />
