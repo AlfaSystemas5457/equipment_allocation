@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_equipment_allocations,equipment_allocations,model_equipment_allocations,base.group_user,1,1,1,1
 access_equipment_replacement,equipment_replacement,model_equipment_replacement,base.group_user,1,1,1,1
 access_equipment_area,equipment_area,model_equipment_area,base.group_user,1,1,1,1
+access_equipment_return_wizard,equipment_return_wizard,model_equipment_return_wizard,base.group_user,1,1,1,1
