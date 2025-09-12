@@ -22,6 +22,7 @@
         'data/uid_sequence_view.xml',
         'report/paper_format.xml',
         'report/report_template.xml',
+        'wizard/equipment_return_wizard_views.xml',
         'views/res_users_config_setings_view.xml',
         'views/menu_view.xml',
         'views/equipment_settings_views.xml',

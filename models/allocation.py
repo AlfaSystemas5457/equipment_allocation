@@ -63,7 +63,8 @@ class Allocations(models.Model):
 
     area = fields.Many2one('equipment.area', string='Area',
                            track_visibility='onchange', track_sequence=2, required=True)
-    description = fields.Text(string='Descripción')
+    description = fields.Html(string='Descripción')
+    return_description = fields.Html(string='Descripción de devolución')
     state = fields.Selection(
         [
             ('draft', 'Nuevo'),
@@ -146,6 +147,19 @@ class Allocations(models.Model):
             elif self.duration_type == 'day':
                 self.return_date = self.allocation_date + relativedelta(days=+self.duration) - \
                     relativedelta(days=1)
+                    
+    def open_return_wizard(self):
+        self.ensure_one()
+        return {
+            'name': 'Devolución de Equipos',
+            'type': 'ir.actions.act_window',
+            'res_model': 'equipment.return.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_allocation_id': self.id
+            }
+        }
 
     def handle_create_report(self):
         return self.env.ref('equipment_allocation.report_template_id').report_action(self)
