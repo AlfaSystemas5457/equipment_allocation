@@ -7,7 +7,7 @@
     'author': 'DGV',
     'website': 'https://github.com/AlfaSystemas5457/equipment_allocation',
     'license': 'LGPL-3',
-    'category': 'Other Category',
+    'category': 'Human Resources',
     'depends': [
         'mail',
         'hr',
