@@ -5,23 +5,33 @@
         <field name="model_id" ref="equipment_allocation.model_equipment_allocations" />
         <field name="subject">🔔 Recordatorio: Devolución de equipos asignados</field>
         <field name="email_from">{{ object.env.company.email }}</field>
-        <field name="email_to">{{ object.employee_ids.work_email }}</field>
+        <field name="email_to">{{ object.employee_id.work_email }}</field>
+        <field name="lang">{{ object.employee_id.lang or 'en_US' }}</field>
         <field name="body_html">
             <![CDATA[
-                <div>
-                    <p>Buen día, 
-                        <t t-out="', '.join([emp.name for emp in object.employee_ids])"/>
-                    </p>
-                    <p>
-                        Los siguientes equipos asignados a usted deben ser devueltos el 
-                        <strong><t t-out="object.return_date.strftime('%d/%m/%Y')"/></strong>:
-                    </p>
-                    <ul>
-                        <t t-foreach="object.equipment_ids" t-as="eq">
-                            <li><t t-out="eq.name"/></li>
-                        </t>
-                    </ul>
-                    <p>Gracias.</p>
+                <div style="background-color: #F1F1F1; padding: 16px;">
+                    <div class="w-75 m-auto shadow p-3 mb-5 bg-white rounded">
+                        <div class="border-bottom w-100 mb-2">
+                            <h1>
+                                <t t-out="object.uid"/>
+                            </h1>
+                        </div>
+                        <p>Buen día <strong><t t-out="object.employee_id.name"/></strong>,</p>
+                        <p>
+                            Los siguientes equipos asignados a usted deben ser devueltos el <strong><t t-out="object.return_date.strftime('%d/%m/%Y')"/></strong>:
+                        </p>
+                        <ul>
+                            <t t-foreach="object.equipment_ids" t-as="item">
+                                <li><t t-out="item.name"/></li>
+                            </t>
+                        </ul>
+                        <div style="margin: 16px 0px;">
+                            <a t-att-href="(object.env['ir.config_parameter'].sudo().get_param('web.base.url') or '') + '/web#id=' + str(object.id) + '&model=equipment.allocations&view_type=form'" style="background-color: #875A7B; padding: 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">
+                                Ver registro
+                            </a>
+                        </div>
+                        <p>Gracias por su atención.</p>
+                    </div>
                 </div>
             ]]>
         </field>
