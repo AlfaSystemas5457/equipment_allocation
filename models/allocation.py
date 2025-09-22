@@ -86,17 +86,15 @@ class Allocations(models.Model):
         default['before_equipment_ids'] = False
         return super(Allocations, self).copy(default)
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('uid'):
-            vals['uid'] = self.env['ir.sequence'].next_by_code(
+    def create(self, vals_list):
+        if not vals_list.get('uid'):
+            vals_list['uid'] = self.env['ir.sequence'].next_by_code(
                 'equipment.allocations') or '/'
-        return super(Allocations, self).create(vals)
+        return super(Allocations, self).create(vals_list)
 
     def unlink(self):
         raise exceptions.UserError("No está permitido eliminar registros.")
 
-    @api.model
     def _notify_upcoming_returns(self):
         send_emails = self.env['ir.config_parameter'].sudo().get_param(
             'equipment_allocation.enable_return_emails')
@@ -147,7 +145,7 @@ class Allocations(models.Model):
             elif self.duration_type == 'day':
                 self.return_date = self.allocation_date + relativedelta(days=+self.duration) - \
                     relativedelta(days=1)
-                    
+
     def open_return_wizard(self):
         self.ensure_one()
         return {
@@ -193,9 +191,10 @@ class Allocations(models.Model):
         errors = []
         for equipment_line in equipment_ids:
             if equipment_line.employee_id:
-                errors.append(f"El equipo {equipment_line.display_name}, ya esta asignado.")
+                errors.append(
+                    f"El equipo {equipment_line.display_name}, ya esta asignado.")
             equipment_line.employee_id = self.employee_id
-        
+
         if errors:
             raise exceptions.UserError("\n".join(errors))
 

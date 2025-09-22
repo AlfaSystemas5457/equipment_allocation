@@ -16,6 +16,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'security/privileges.xml',
         'security/groups_security.xml',
         'data/email_template.xml',
         'data/cron.xml',

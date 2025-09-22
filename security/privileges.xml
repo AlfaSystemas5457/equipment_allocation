@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record id="privileges_ids_equipment_allocation"
+            model="res.groups.privilege">
+            <field name="name">Asignación de equipos</field>
+        </record>
+    </data>
+</odoo>

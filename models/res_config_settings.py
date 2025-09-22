@@ -30,9 +30,9 @@ class UsersSettings(models.Model):
                 continue
 
             if access_scope:
-                user.groups_id = user.groups_id | group_equipment_allocations | group_equipment_replacement
+                user.group_ids = user.group_ids | group_equipment_allocations | group_equipment_replacement
             else:
-                user.groups_id = user.groups_id - \
+                user.group_ids = user.group_ids - \
                     group_equipment_replacement - group_equipment_allocations
 
     def write(self, vals):
