@@ -1,50 +1,72 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <record id="equipment_replacement_view_form" model="ir.ui.view">
+    <record id="equipment_replacement_view_form"
+        model="ir.ui.view">
         <field name="name">equipment.replacement.view.form</field>
         <field name="model">equipment.replacement</field>
-        <field name="arch" type="xml">
-            <form delete="false" duplicate="false">
+        <field name="arch"
+            type="xml">
+            <form delete="false"
+                duplicate="false">
                 <header>
-                    <button name="handle_allocated" type="object" string="Asignar"
-                        class="oe_highlight " invisible="state != 'draft'" />
-                    <button name="handle_rejected" type="object" string="Rechazar"
-                        class="oe_stat_button" invisible="state != 'draft'" />
-                    <button name="handle_draft" type="object" string="Restablecer a borrador"
+                    <button name="handle_allocated"
+                        type="object"
+                        string="Asignar"
+                        class="oe_highlight "
+                        invisible="state != 'draft'" />
+                    <button name="handle_rejected"
+                        type="object"
+                        string="Rechazar"
+                        class="oe_stat_button"
+                        invisible="state != 'draft'" />
+                    <button name="handle_draft"
+                        type="object"
+                        string="Restablecer a borrador"
                         class="oe_stat_button"
                         groups="equipment_allocation.group_equipment_replacement_access" />
 
-                    <field name="state" widget="statusbar" />
+                    <field name="state"
+                        widget="statusbar" />
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <div class="o_row">
-                            <field name="uid" readonly="1" />
+                            <field name="uid"
+                                readonly="1" />
                         </div>
                         <h1 class="o_row">
-                            <field name="uid_replacement" placeholder="Reemplazo de equipo"
+                            <field name="uid_replacement"
+                                placeholder="Reemplazo de equipo"
                                 readonly="state not in ['draft']" />
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="name" readonly="1" />
-                            <field name="area" readonly="1" />
-                            <field name="employee_id" widget="many2one_avatar_employee" readonly="1" />
+                            <field name="name"
+                                readonly="1" />
+                            <field name="area"
+                                readonly="1" />
+                            <field name="employee_id"
+                                widget="many2one_avatar_employee"
+                                readonly="1" />
                         </group>
                         <group>
-                            <field name="request_date" readonly="1" />
+                            <field name="request_date"
+                                readonly="1" />
                             <field name="allocation_type"
-                                readonly="1" widget="radio"
+                                readonly="1"
+                                widget="radio"
                                 options="{'horizontal': true}" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Equipos">
-                            <field name="equipment_ids" readonly="state not in ['draft']" />
+                            <field name="equipment_ids"
+                                readonly="state not in ['draft']" />
                         </page>
                         <page string="Descripción">
-                            <field name="description" readonly="state not in ['draft']" />
+                            <field name="description"
+                                readonly="state not in ['draft']" />
                         </page>
                     </notebook>
                 </sheet>
@@ -53,25 +75,37 @@
         </field>
     </record>
 
-    <record id="equipment_replacement_view_list" model="ir.ui.view">
+    <record id="equipment_replacement_view_list"
+        model="ir.ui.view">
         <field name="name">equipment.replacement.view.list</field>
         <field name="model">equipment.replacement</field>
-        <field name="arch" type="xml">
-            <list delete="false" duplicate="false">
-                <field name="uid" width="100" decoration-bf="1" />
+        <field name="arch"
+            type="xml">
+            <list delete="false"
+                duplicate="false">
+                <field name="uid"
+                    width="100"
+                    decoration-bf="1" />
                 <field name="name" />
-                <field name="create_date" string="Fecha de creación" width="200" />
-                <field name="request_date" width="200" />
-                <field name="area" width="200" />
-                <field name="state" width="200" />
+                <field name="create_date"
+                    string="Fecha de creación"
+                    width="200" />
+                <field name="request_date"
+                    width="200" />
+                <field name="area"
+                    width="200" />
+                <field name="state"
+                    width="200" />
             </list>
         </field>
     </record>
 
-    <record id="equipment_replacement_search_view" model="ir.ui.view">
+    <record id="equipment_replacement_search_view"
+        model="ir.ui.view">
         <field name="name">equipment.replacement.search</field>
         <field name="model">equipment.replacement</field>
-        <field name="arch" type="xml">
+        <field name="arch"
+            type="xml">
             <search string="Buscar Reemplazo de Equipos">
                 <field name="name" />
                 <field name="employee_id" />
@@ -92,7 +126,7 @@
                     string="Devueltos"
                     domain="[('state','=','returned')]" />
 
-                <group expand="0" string="Agrupar por">
+                <group>
                     <filter name="state"
                         string="Estado"
                         domain="[]"
@@ -101,6 +135,7 @@
                         string="Tipo de Asignación"
                         domain="[]"
                         context="{'group_by': 'allocation_type'}" />
+                    <separator/>
                     <filter name="employee_id"
                         string="Empleado"
                         domain="[]"
@@ -115,19 +150,20 @@
     </record>
 
 
-    <record id="equipment_replacement_action" model="ir.actions.act_window">
+    <record id="equipment_replacement_action"
+        model="ir.actions.act_window">
         <field name="name">Reemplazo de equipos</field>
         <field name="res_model">equipment.replacement</field>
         <field name="view_mode">list,form</field>
-        <field name="help" type="html">
+        <field name="help"
+            type="html">
             <p class="o_view_nocontent_smiling_face">
                 Desde aquí puedes gestionar tus reemplazos.
             </p>
         </field>
     </record>
 
-    <menuitem
-        id="equipment_replacement_sub_menu"
+    <menuitem id="equipment_replacement_sub_menu"
         name="Solicitud de reemplazo de equipos"
         action="equipment_replacement_action"
         parent="equipment_allocations_menu"
