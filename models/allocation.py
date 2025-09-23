@@ -241,5 +241,15 @@ class Allocations(models.Model):
         self.state = 'rejected'
 
     def handle_draft(self):
+        ids = [data.id for data in self.equipment_ids]
+        equipment_ids = self.env['maintenance.equipment'].search(
+            [
+                ('id', 'in', ids)
+            ]
+        )
+
+        for equipment_line in equipment_ids:
+            equipment_line.employee_id = False
+
         self.real_return_date = False
         self.state = 'draft'
