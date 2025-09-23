@@ -1,22 +1,28 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <record id="emploee_departament_maintenance_equipment_view_form_inherit_hr" model="ir.ui.view">
+    <record id="emploee_departament_maintenance_equipment_view_form_inherit_hr"
+        model="ir.ui.view">
         <field name="name">maintenance.equipment.view.form.inherit</field>
         <field name="model">maintenance.equipment</field>
-        <field name="inherit_id" ref="hr_maintenance.maintenance_equipment_view_form_inherit_hr" />
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='employee_id']" position="replace">
+        <field name="inherit_id"
+            ref="hr_maintenance.maintenance_equipment_view_form_inherit_hr" />
+        <field name="arch"
+            type="xml">
+            <xpath expr="//field[@name='employee_id']"
+                position="replace">
                 <field name="employee_id"
-                    widget="badge"
                     readonly="1"
                     attrs="{'invisible': [('employee_id', '=', False)]}" />
             </xpath>
-            <xpath expr="//field[@name='department_id']" position="replace">
-                <field name="department_id" string="Department" invisible="1" />
+            <xpath expr="//field[@name='department_id']"
+                position="replace">
+                <field name="department_id"
+                    string="Department"
+                    invisible="1" />
             </xpath>
-            <xpath expr="//field[@name='equipment_assign_to']" position="replace">
+            <xpath expr="//field[@name='equipment_assign_to']"
+                position="replace">
                 <field name="equipment_assign_to"
-                    widget="badge"
                     readonly="1" />
             </xpath>
         </field>
