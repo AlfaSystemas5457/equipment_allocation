@@ -17,7 +17,7 @@ class Replacement(models.Model):
         string='UID para reemplazar',
         tracking=True,
         required=True,
-        domain="[('state', 'not in', ['rejected', 'returned']), ('has_replacement', '=', False)]"
+        domain="[('state', 'not in', ['rejected', 'returned', 'draft']), ('has_replacement', '=', False)]"
     )
 
     employee_id = fields.Many2one(
