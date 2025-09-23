@@ -147,7 +147,7 @@ class Allocations(models.Model):
             elif self.duration_type == 'day':
                 self.return_date = self.allocation_date + relativedelta(days=+self.duration) - \
                     relativedelta(days=1)
-                    
+
     def open_return_wizard(self):
         self.ensure_one()
         return {
@@ -193,9 +193,10 @@ class Allocations(models.Model):
         errors = []
         for equipment_line in equipment_ids:
             if equipment_line.employee_id:
-                errors.append(f"El equipo {equipment_line.display_name}, ya esta asignado.")
+                errors.append(
+                    f"El equipo {equipment_line.display_name}, ya esta asignado.")
             equipment_line.employee_id = self.employee_id
-        
+
         if errors:
             raise exceptions.UserError("\n".join(errors))
 
@@ -242,5 +243,15 @@ class Allocations(models.Model):
         self.state = 'rejected'
 
     def handle_draft(self):
+        ids = [data.id for data in self.equipment_ids]
+        equipment_ids = self.env['maintenance.equipment'].search(
+            [
+                ('id', 'in', ids)
+            ]
+        )
+
+        for equipment_line in equipment_ids:
+            equipment_line.employee_id = False
+
         self.real_return_date = False
         self.state = 'draft'
