@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Asignacion de equipos',
+    'name': 'Asignación de equipos',
     'version': '1.0',
     'description': 'Sistema de asignación de equipos',
     'summary': 'Sistema de asignación de equipos',

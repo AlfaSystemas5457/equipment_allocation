@@ -47,7 +47,6 @@ class Replacement(models.Model):
         default='draft', tracking=True, required=True, string='Estado'
     )
 
-    @api.model
     def create(self, vals):
         if not vals.get('uid'):
             vals['uid'] = self.env['ir.sequence'].next_by_code(
@@ -114,7 +113,7 @@ class Replacement(models.Model):
 
     def handle_allocated(self):
         self.ensure_one()
-        
+
         if self.uid_replacement.state != 'allocated':
             raise exceptions.UserError("No se ha asignado ningún equipo.")
 
@@ -126,8 +125,9 @@ class Replacement(models.Model):
 
         allocations.has_replacement = True
         allocations.before_equipment_ids = allocations.equipment_ids
-        
-        filtered_equipment = allocations.equipment_ids.filtered(lambda x: x.employee_id.id == self.employee_id.id)
+
+        filtered_equipment = allocations.equipment_ids.filtered(
+            lambda x: x.employee_id.id == self.employee_id.id)
 
         ids = [data.id for data in filtered_equipment]
         equipment_ids = self.env['maintenance.equipment'].search(
@@ -147,13 +147,14 @@ class Replacement(models.Model):
                 ('id', 'in', ids)
             ]
         )
-        
+
         errors = []
         for employee_equipment in equipment_ids:
             if employee_equipment.employee_id:
-                errors.append(f"El equipo {employee_equipment.display_name}, ya esta asignado.")
+                errors.append(
+                    f"El equipo {employee_equipment.display_name}, ya esta asignado.")
             employee_equipment.employee_id = self.employee_id
-        
+
         if errors:
             raise exceptions.UserError("\n".join(errors))
 
