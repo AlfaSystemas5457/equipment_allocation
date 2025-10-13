@@ -238,7 +238,8 @@ class Allocations(models.Model):
         )
 
         for equipment_line in equipment_ids:
-            equipment_line.employee_id = False
+            if equipment_line.employee_id.id == self.employee_id.id:
+                equipment_line.employee_id = False
 
         self.state = 'rejected'
 
