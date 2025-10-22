@@ -18,7 +18,7 @@ class Allocations(models.Model):
     uid = fields.Char('UID', readonly=True, copy=False, index=True)
 
     employee_id = fields.Many2one(
-        'hr.employee', string='Empleado', tracking=True, required=True)
+        'hr.employee', string='Empleado', tracking=True, required=True, ondelete='restrict')
     equipment_ids = fields.Many2many(
         'maintenance.equipment',
         'equipment_allocations_rel',
@@ -27,7 +27,8 @@ class Allocations(models.Model):
         string='Equipos',
         tracking=True,
         domain="[('employee_id', '=', False)]",
-        required=True
+        required=True,
+        ondelete='restrict'
     )
 
     before_equipment_ids = fields.Many2many(
@@ -36,7 +37,8 @@ class Allocations(models.Model):
         'allocation_id',
         'equipment_id',
         string='Equipos anteriores',
-        tracking=True
+        tracking=True,
+        ondelete='restrict'
     )
 
     allocation_type = fields.Selection(

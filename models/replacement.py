@@ -17,13 +17,14 @@ class Replacement(models.Model):
         string='UID para reemplazar',
         tracking=True,
         required=True,
-        domain="[('state', 'not in', ['draft', 'rejected', 'returned']), ('has_replacement', '=', False)]"
+        domain="[('state', 'not in', ['draft', 'rejected', 'returned']), ('has_replacement', '=', False)]",
+        ondelete='restrict'
     )
 
     employee_id = fields.Many2one(
-        'hr.employee', string='Empleado', tracking=True, required=True)
+        'hr.employee', string='Empleado', tracking=True, required=True, ondelete='restrict')
     equipment_ids = fields.Many2many(
-        'maintenance.equipment', string='Equipos', tracking=True, domain="[('employee_id', '=', False)]", required=True)
+        'maintenance.equipment', string='Equipos', tracking=True, domain="[('employee_id', '=', False)]", required=True, ondelete='restrict')
 
     allocation_type = fields.Selection(
         [
@@ -114,7 +115,7 @@ class Replacement(models.Model):
 
     def handle_allocated(self):
         self.ensure_one()
-        
+
         if self.uid_replacement.state != 'allocated':
             raise exceptions.UserError("No se ha asignado ningún equipo.")
 
@@ -126,8 +127,9 @@ class Replacement(models.Model):
 
         allocations.has_replacement = True
         allocations.before_equipment_ids = allocations.equipment_ids
-        
-        filtered_equipment = allocations.equipment_ids.filtered(lambda x: x.employee_id.id == self.employee_id.id)
+
+        filtered_equipment = allocations.equipment_ids.filtered(
+            lambda x: x.employee_id.id == self.employee_id.id)
 
         ids = [data.id for data in filtered_equipment]
         equipment_ids = self.env['maintenance.equipment'].search(
@@ -147,13 +149,14 @@ class Replacement(models.Model):
                 ('id', 'in', ids)
             ]
         )
-        
+
         errors = []
         for employee_equipment in equipment_ids:
             if employee_equipment.employee_id:
-                errors.append(f"El equipo {employee_equipment.display_name}, ya esta asignado.")
+                errors.append(
+                    f"El equipo {employee_equipment.display_name}, ya esta asignado.")
             employee_equipment.employee_id = self.employee_id
-        
+
         if errors:
             raise exceptions.UserError("\n".join(errors))
 
