@@ -30,7 +30,8 @@
                         groups="equipment_allocation.group_equipment_allocations_access" />
 
                     <field name="state"
-                        widget="statusbar" />
+                        widget="statusbar"
+                        statusbar_visible="draft,allocated,returned"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
