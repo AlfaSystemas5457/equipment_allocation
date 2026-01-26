@@ -42,8 +42,6 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name"
-                                readonly="1" />
                             <field name="area"
                                 readonly="1" />
                             <field name="employee_id"
@@ -94,7 +92,7 @@
                 <field name="uid"
                     width="100"
                     decoration-bf="1" />
-                <field name="name" />
+                <field name="employee_id" />
                 <field name="create_date"
                     string="Fecha de creación"
                     width="200" />
@@ -115,7 +113,6 @@
         <field name="arch"
             type="xml">
             <search string="Buscar Reemplazo de Equipos">
-                <field name="name" />
                 <field name="employee_id" />
                 <field name="area" />
                 <field name="allocation_type" />

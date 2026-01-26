@@ -34,14 +34,9 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <div class="o_row">
+                        <h1 class="o_row">
                             <field name="uid"
                                 readonly="1" />
-                        </div>
-                        <h1 class="o_row">
-                            <field name="name"
-                                placeholder="Solicitud de equipo"
-                                readonly="state not in ['draft']" />
                         </h1>
                     </div>
                     <group>
@@ -133,7 +128,7 @@
                 <field name="uid"
                     decoration-bf="1"
                     width="100" />
-                <field name="name" />
+                <field name="employee_id" />
                 <field name="allocation_type"
                     width="200" />
                 <field name="create_date"
@@ -158,7 +153,6 @@
         <field name="arch"
             type="xml">
             <search string="Buscar Asignación de Equipos">
-                <field name="name" />
                 <field name="employee_id" />
                 <field name="area" />
                 <field name="allocation_type" />
