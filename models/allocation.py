@@ -92,7 +92,6 @@ class Allocations(models.Model):
 
     def copy(self, default=None):
         default = default or {}
-        default["name"] = f"{self.name} (Copia)"
         default["state"] = f"draft"
         default["has_replacement"] = False
         default["before_equipment_ids"] = False
@@ -143,12 +142,12 @@ class Allocations(models.Model):
                             message_type="comment",
                         )
                         _logger.info(
-                            f"Internal notification sent to {record.name} (withoout email)"
+                            f"Internal notification sent to {record.uid} (withoout email)"
                         )
 
                 except Exception as e:
                     _logger.error(
-                        f"Error sending email for registration {record.name}: {str(e)}"
+                        f"Error sending email for registration {record.uid}: {str(e)}"
                     )
 
     @api.onchange("duration", "duration_type")
