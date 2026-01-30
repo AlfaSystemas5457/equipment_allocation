@@ -15,7 +15,7 @@ class Allocations(models.Model):
     _order = "uid DESC"
     _rec_name = "uid"
 
-    uid = fields.Char("UID", readonly=True, copy=False, index=True)
+    uid = fields.Char("UID", readonly=True, copy=False, index=True, default="Borrador")
 
     employee_id = fields.Many2one(
         "hr.employee",
@@ -71,7 +71,7 @@ class Allocations(models.Model):
     )
 
     area = fields.Many2one(
-        "equipment.area", string="Area", tracking=True, required=True
+        "equipment.area", string="Área", tracking=True, required=True
     )
     description = fields.Html(string="Descripción")
     return_description = fields.Html(string="Descripción de devolución")
