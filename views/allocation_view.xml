@@ -30,18 +30,14 @@
                         groups="equipment_allocation.group_equipment_allocations_access" />
 
                     <field name="state"
-                        widget="statusbar" />
+                        widget="statusbar"
+                        statusbar_visible="draft,allocated,returned"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <div class="o_row">
+                        <h1 class="o_row">
                             <field name="uid"
                                 readonly="1" />
-                        </div>
-                        <h1 class="o_row">
-                            <field name="name"
-                                placeholder="Solicitud de equipo"
-                                readonly="state not in ['draft']" />
                         </h1>
                     </div>
                     <group>
@@ -55,7 +51,6 @@
                             <field name="employee_id"
                                 widget="many2one_avatar_employee"
                                 readonly="state not in ['draft']" />
-                            <!-- <field name="employee_ids" widget="badge" readonly="state not in ['draft']" /> -->
                             <field name="has_replacement"
                                 invisible="has_replacement == False"
                                 readonly="1" />
@@ -93,12 +88,28 @@
                     <notebook>
                         <page string="Equipos">
                             <field name="equipment_ids"
-                                readonly="state not in ['draft']" />
+                                readonly="state not in ['draft']">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="serial_no" />
+                                    <field name="technician_user_id" />
+                                    <field name="category_id" />
+                                    <field name="company_id" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Equipos Anteriores"
                             invisible="not before_equipment_ids">
                             <field name="before_equipment_ids"
-                                readonly="state not in ['draft']" />
+                                readonly="state not in ['draft']">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="serial_no" />
+                                    <field name="technician_user_id" />
+                                    <field name="category_id" />
+                                    <field name="company_id" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Descripción">
                             <field name="description"
@@ -109,7 +120,6 @@
                             <field name="return_description"
                                 readonly="state not in ['draft']" />
                         </page>
-
                     </notebook>
                 </sheet>
                 <chatter />
@@ -127,7 +137,7 @@
                 <field name="uid"
                     decoration-bf="1"
                     width="100" />
-                <field name="name" />
+                <field name="employee_id" />
                 <field name="allocation_type"
                     width="200" />
                 <field name="create_date"
@@ -151,8 +161,7 @@
         <field name="model">equipment.allocations</field>
         <field name="arch"
             type="xml">
-            <search>
-                <field name="name" />
+            <search string="Buscar Asignación de Equipos">
                 <field name="employee_id" />
                 <field name="area" />
                 <field name="allocation_type" />
@@ -171,7 +180,8 @@
                     string="Devueltos"
                     domain="[('state','=','returned')]" />
 
-                <group>
+                <group expand="0"
+                    string="Agrupar por">
                     <filter name="state"
                         string="Estado"
                         domain="[]"

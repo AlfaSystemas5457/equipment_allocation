@@ -26,7 +26,8 @@
                         groups="equipment_allocation.group_equipment_replacement_access" />
 
                     <field name="state"
-                        widget="statusbar" />
+                        widget="statusbar"
+                        statusbar_visible="draft,allocated,returned" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -42,8 +43,6 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name"
-                                readonly="1" />
                             <field name="area"
                                 readonly="1" />
                             <field name="employee_id"
@@ -62,7 +61,15 @@
                     <notebook>
                         <page string="Equipos">
                             <field name="equipment_ids"
-                                readonly="state not in ['draft']" />
+                                readonly="state not in ['draft']">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="serial_no" />
+                                    <field name="technician_user_id" />
+                                    <field name="category_id" />
+                                    <field name="company_id" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Descripción">
                             <field name="description"
@@ -86,7 +93,7 @@
                 <field name="uid"
                     width="100"
                     decoration-bf="1" />
-                <field name="name" />
+                <field name="employee_id" />
                 <field name="create_date"
                     string="Fecha de creación"
                     width="200" />
@@ -107,7 +114,6 @@
         <field name="arch"
             type="xml">
             <search string="Buscar Reemplazo de Equipos">
-                <field name="name" />
                 <field name="employee_id" />
                 <field name="area" />
                 <field name="allocation_type" />
@@ -126,7 +132,8 @@
                     string="Devueltos"
                     domain="[('state','=','returned')]" />
 
-                <group>
+                <group expand="0"
+                    string="Agrupar por">
                     <filter name="state"
                         string="Estado"
                         domain="[]"
