@@ -71,7 +71,7 @@ class Allocations(models.Model):
     )
 
     area = fields.Many2one(
-        "equipment.area", string="Area", tracking=True, required=True
+        "equipment.area", string="Área", tracking=True, required=True
     )
     description = fields.Html(string="Descripción")
     return_description = fields.Html(string="Descripción de devolución")
