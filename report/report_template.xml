@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <!-- Registro del Reporte -->
-    <record id="report_template_id" model="ir.actions.report">
+    <record id="report_template_id"
+        model="ir.actions.report">
         <field name="name">Reporte de asignación de equipo</field>
         <field name="model">equipment.allocations</field>
         <field name="report_type">qweb-pdf</field>
@@ -10,9 +11,11 @@
         <field name="print_report_name">'Reporte ' + 'de asignación de equipos ' + (object.uid or
             object.name or
             'Without name')</field>
-        <field name="binding_model_id" ref="equipment_allocation.model_equipment_allocations" />
+        <field name="binding_model_id"
+            ref="equipment_allocation.model_equipment_allocations" />
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="equipment_allocation.custom_paperformat_a4_landscape" />
+        <field name="paperformat_id"
+            ref="equipment_allocation.custom_paperformat_a4_landscape" />
     </record>
 
     <!-- Plantilla del Reporte -->
@@ -20,18 +23,21 @@
         <t t-call="web.external_layout">
             <t t-call="web.html_container">
                 <main class="article container h-100 w-100 p-2">
-                    <t t-foreach="docs" t-as="o">
+                    <t t-foreach="docs"
+                        t-as="o">
                         <div class="text-center mb-2">
                             <h3 class="text-muted fs-1">
-                                <t t-esc="o.uid" /> - <t
-                                    t-out="dict(request.env['equipment.allocations']._fields['state'].selection).get(o.state)" />
+                                <t t-esc="o.uid" />
+ -                                <t t-out="dict(request.env['equipment.allocations']._fields['state'].selection).get(o.state)" />
                             </h3>
                         </div>
                         <div class="oe_structure" />
-                        <table class="table table-borderless" style="table-layout: fixed">
+                        <table class="table table-borderless"
+                            style="table-layout: fixed">
                             <thead>
                                 <tr>
-                                    <th t-if="o.employee_id" class="text-center py-1 px-2 fs-5">
+                                    <th t-if="o.employee_id"
+                                        class="text-center py-1 px-2 fs-5">
                                         Empleados</th>
                                     <th class="text-center py-1 px-2 fs-5">Área</th>
                                     <th class="text-center py-1 px-2 fs-5">Tipo de Asignación</th>
@@ -39,31 +45,35 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td t-if="o.employee_id" class="text-center p-1 fs-6">
+                                    <td t-if="o.employee_id"
+                                        class="text-center p-1 fs-6">
                                         <t t-out="o.employee_id.display_name" />
                                     </td>
                                     <td class="text-center p-1 fs-6">
                                         <t t-out="o.area.name if o.area else 'Sin área asignada'" />
                                     </td>
                                     <td class="text-center p-1 fs-6">
-                                        <t
-                                            t-out="dict(request.env['equipment.allocations']._fields['allocation_type'].selection).get(o.allocation_type)" />
+                                        <t t-out="dict(request.env['equipment.allocations']._fields['allocation_type'].selection).get(o.allocation_type)" />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <t t-if="o.allocation_type == 'on_demand'">
                             <h4 class="fw-bold fs-3">Detalles de la Asignación</h4>
-                            <table class="table table-borderless" style="table-layout: fixed">
+                            <table class="table table-borderless"
+                                style="table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th class="text-center py-1 px-2 fs-5" t-if="o.request_date">F.
+                                        <th class="text-center py-1 px-2 fs-5"
+                                            t-if="o.request_date">F.
                                             Solicitud</th>
                                         <th class="text-center py-1 px-2 fs-5"
                                             t-if="o.allocation_date">F. asignación</th>
-                                        <th class="text-center py-1 px-2 fs-5" t-if="o.duration">
+                                        <th class="text-center py-1 px-2 fs-5"
+                                            t-if="o.duration">
                                             Duración</th>
-                                        <th class="text-center py-1 px-2 fs-5" t-if="o.return_date">F.
+                                        <th class="text-center py-1 px-2 fs-5"
+                                            t-if="o.return_date">F.
                                             prev</th>
                                         <th class="text-center py-1 px-2 fs-5"
                                             t-if="o.real_return_date">F. devolución</th>
@@ -71,23 +81,27 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-center p-1 fs-6" t-if="o.request_date">
+                                        <td class="text-center p-1 fs-6"
+                                            t-if="o.request_date">
                                             <t t-esc="o.request_date.strftime('%d-%m-%Y')"
                                                 t-if="o.request_date" />
                                         </td>
-                                        <td class="text-center p-1 fs-6" t-if="o.allocation_date">
+                                        <td class="text-center p-1 fs-6"
+                                            t-if="o.allocation_date">
                                             <t t-esc="o.allocation_date.strftime('%d-%m-%Y')"
                                                 t-if="o.allocation_date" />
                                         </td>
-                                        <td class="text-center p-1 fs-6" t-if="o.duration">
+                                        <td class="text-center p-1 fs-6"
+                                            t-if="o.duration">
                                             <t t-esc="o.duration" />
-                                            <t
-                                                t-out="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(o.duration_type)" />
+                                            <t t-out="dict(request.env['equipment.allocations']._fields['duration_type'].selection).get(o.duration_type)" />
                                         </td>
-                                        <td class="text-center p-1 fs-6" t-if="o.return_date">
+                                        <td class="text-center p-1 fs-6"
+                                            t-if="o.return_date">
                                             <t t-esc="o.return_date.strftime('%d-%m-%Y')" />
                                         </td>
-                                        <td class="text-center p-1 fs-6" t-if="o.real_return_date">
+                                        <td class="text-center p-1 fs-6"
+                                            t-if="o.real_return_date">
                                             <t t-esc="o.real_return_date.strftime('%d-%m-%Y')" />
                                         </td>
                                     </tr>
@@ -106,14 +120,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-foreach="o.equipment_ids" t-as="eq" t-index="i">
+                                    <t t-foreach="o.equipment_ids"
+                                        t-as="eq"
+                                        t-index="i">
                                         <tr>
-                                            <td class="text-start text-nowrap p-1 fs-6">
+                                            <td class="text-start text-wrap p-1 fs-6">
                                                 <t t-esc="eq.name" />
                                             </td>
                                             <td class="text-start text-nowrap p-1 fs-6">
-                                                <t
-                                                    t-esc="eq.category_id.name if eq.category_id else ''" />
+                                                <t t-esc="eq.category_id.name if eq.category_id else ''" />
                                             </td>
                                             <td class="text-start text-nowrap p-1 fs-6">
                                                 <t t-esc="eq.serial_no or ''" />
