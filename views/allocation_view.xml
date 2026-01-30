@@ -190,6 +190,7 @@
                         string="Tipo de Asignación"
                         domain="[]"
                         context="{'group_by': 'allocation_type'}" />
+                    <separator/>
                     <filter name="employee_id"
                         string="Empleado"
                         domain="[]"
