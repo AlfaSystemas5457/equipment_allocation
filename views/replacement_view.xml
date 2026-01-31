@@ -132,8 +132,7 @@
                     string="Devueltos"
                     domain="[('state','=','returned')]" />
 
-                <group expand="0"
-                    string="Agrupar por">
+                <group>
                     <filter name="state"
                         string="Estado"
                         domain="[]"
