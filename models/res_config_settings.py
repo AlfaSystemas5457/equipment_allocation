@@ -21,39 +21,32 @@ class UsersSettings(models.Model):
         help="Permite al usuario ver y gestionar todas las asignaciones de equipos sin restricciones.",
     )
 
-    def _update_groups_based_on_scope(self, access_scope=False):
-        group_equipment_replacement = self.env.ref(
-            "equipment_allocation.group_equipment_replacement_access",
-            raise_if_not_found=False,
+    def _update_groups_based_on_scope_equipment(self):
+        group_rep = self.env.ref(
+            "equipment_allocation.group_equipment_replacement_access", False
         )
-        group_equipment_allocations = self.env.ref(
-            "equipment_allocation.group_equipment_allocations_access",
-            raise_if_not_found=False,
+        group_all = self.env.ref(
+            "equipment_allocation.group_equipment_allocations_access", False
         )
+
+        if not group_rep or not group_all:
+            return
 
         for user in self:
-            if not group_equipment_replacement or not group_equipment_allocations:
-                continue
-
-            if access_scope:
-                user.group_ids = (
-                    user.group_ids
-                    | group_equipment_allocations
-                    | group_equipment_replacement
-                )
+            if user.access_scope_equipment:
+                user.group_ids = user.group_ids | group_rep | group_all
             else:
-                user.group_ids = (
-                    user.group_ids
-                    - group_equipment_replacement
-                    - group_equipment_allocations
-                )
+                user.group_ids = user.group_ids - group_rep - group_all
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        users = super().create(vals_list)
+        users._update_groups_based_on_scope_equipment()
+        return users
 
     def write(self, vals):
-        if "access_scope_equipment" in vals:
-            self._update_groups_based_on_scope(vals["access_scope_equipment"])
-        return super().write(vals)
+        res = super().write(vals)
 
-    def create(self, vals_list):
-        if "access_scope_equipment" in vals_list:
-            self._update_groups_based_on_scope(vals_list["access_scope_equipment"])
-        return super().create(vals_list)
+        if "access_scope_equipment" in vals:
+            self._update_groups_based_on_scope_equipment()
+        return res
